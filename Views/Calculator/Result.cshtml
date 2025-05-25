@@ -1,0 +1,23 @@
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Результат операции";
+    string? operationString = ViewBag.OperationString as string;
+    string resultString = operationString ?? "";
+    // Заменяем знак равенства на слово "равно" с помощью IndexOf, Remove, Insert
+    int eqIndex = resultString.IndexOf('=');
+    if (eqIndex != -1)
+    {
+        resultString = resultString.Remove(eqIndex, 1).Insert(eqIndex, " равно ");
+    }
+}
+
+<h2>Результат операции</h2>
+@if (!string.IsNullOrEmpty(resultString))
+{
+    <div class="alert alert-info">@resultString</div>
+}
+else
+{
+    <div class="alert alert-warning">Нет данных для отображения.</div>
+}
+<a asp-action="Index" asp-controller="Calculator" class="btn btn-primary">Назад к калькулятору</a> 

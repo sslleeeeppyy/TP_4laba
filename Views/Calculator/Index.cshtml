@@ -1,0 +1,59 @@
+@model Laba1_TP.Models.CalculatorModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Калькулятор";
+    var operations = new List<SelectListItem>
+    {
+        new SelectListItem { Text = "+", Value = "+" },
+        new SelectListItem { Text = "-", Value = "-" },
+        new SelectListItem { Text = "*", Value = "*" },
+        new SelectListItem { Text = "/", Value = "/" }
+    };
+}
+
+@section Info {
+    <div class="alert alert-info">
+        Это секция с дополнительной информацией о калькуляторе.
+    </div>
+}
+
+<h2>Калькулятор</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Исправьте ошибки и попробуйте снова.", new { @class = "text-danger" })
+    <div>
+        @Html.LabelFor(m => m.Operand1)
+        @Html.TextBoxFor(m => m.Operand1, new { @class = "textBoxStyle" })
+        @Html.ValidationMessageFor(m => m.Operand1, "", new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Operand2)
+        @Html.TextBoxFor(m => m.Operand2)
+        @Html.ValidationMessageFor(m => m.Operand2, "", new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Operation)
+        @Html.DropDownListFor(m => m.Operation, operations)
+    </div>
+    <div>
+        <input type="submit" name="action" value="Вычислить" />
+        <input type="submit" name="action" value="Очистить" />
+    </div>
+    <div>
+        <label>Результат:</label>
+        <span>@Model.Result</span>
+    </div>
+    @if (ViewBag.CompareValue != null)
+    {
+        if (Model.Result == (double)ViewBag.CompareValue)
+        {
+            <div class="alert alert-success">Результат совпадает с заданным значением (@ViewBag.CompareValue).</div>
+        }
+        else
+        {
+            <div class="alert alert-warning">Результат не совпадает с заданным значением (@ViewBag.CompareValue).</div>
+        }
+    }
+    <a asp-action="Result" asp-controller="Calculator" class="btn btn-secondary">Показать последнюю операцию</a>
+} 
